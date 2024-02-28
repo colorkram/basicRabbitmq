@@ -5,7 +5,7 @@ import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3001);
+  await app.listen(process.env.APP_PORT);
   app.enableCors();
   // console.log(`application is running on: ${await app.getUrl()}/api`);
   console.log('start');
