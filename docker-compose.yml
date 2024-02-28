@@ -1,0 +1,18 @@
+version: '3'
+services:
+
+  api:
+    image: starter/test:1.0.0
+    container_name: starter
+    ports:
+      - '3110:3001'
+    environment:
+      TZ: Asia/Bangkok
+    volumes:
+      - ./log-data:/usr/src/app/log
+      - ./.env:/usr/src/app/.env
+      - ./db:/usr/src/app/db
+      - ./booking:/usr/src/app/db/booking
+    restart: always
+
+# docker compose exec api npm run migration:run
