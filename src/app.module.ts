@@ -5,9 +5,15 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { AuthModule } from './auth/auth.module';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
-  imports: [    TypeOrmModule.forRoot(dataSourceOptions),UserModule, AuthModule],
+  imports: [
+    TypeOrmModule.forRoot(dataSourceOptions),
+    UserModule,
+    AuthModule,
+    TodoModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

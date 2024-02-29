@@ -27,6 +27,8 @@ export class SignUpUserDto {
 
     // @ApiProperty()
     phone: string;
+    
+    user_type: string;
 
     // @IsNotEmpty()
     // @ApiProperty({ enum: UserType, required: true })

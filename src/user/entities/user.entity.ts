@@ -1,7 +1,8 @@
 import { IsNotEmpty, Matches } from "class-validator";
+import { Todo } from "src/todo/entities/todo.entity";
 // import { UserProfile } from "src/user_profiles/entities/user_profile.entity";
 import { StatusEnum } from "src/utils/constatics/status.enum";
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('users')
 export class User {
@@ -21,6 +22,9 @@ export class User {
     @Column()
     fullname: string;
 
+    @Column()
+    user_type: string;
+
     @CreateDateColumn()
     created: Date;
 
@@ -30,10 +34,6 @@ export class User {
     @Column({ default: StatusEnum.ACTIVE })
     status: string;
 
-    // @Column({default:false})
-    // superadmin:boolean;
-
-    // @OneToOne(() => UserProfile)
-    // @JoinColumn({ name: 'id', referencedColumnName: 'user_id' })
-    // user_profiles: UserProfile;
+    @OneToMany(() => Todo, todo => todo.user) // Establish One-to-Many relationship
+    todos: Todo[]; // Reference to an array of Todo entities
 }

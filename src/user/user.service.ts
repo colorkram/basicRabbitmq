@@ -22,6 +22,8 @@ export class UserService {
   }
 
   async signUp(signUpUserDto: SignUpUserDto): Promise<any> {
+    console.log('signUpUserDto',signUpUserDto);
+    
     try {
       if (signUpUserDto.password !== signUpUserDto.password_confirm) {
         throw new BadRequestException('Passwords do not match!');
@@ -42,6 +44,7 @@ export class UserService {
         fullname: signUpUserDto.fullname,
         password: hash,
         phone: signUpUserDto.phone,
+        user_type:signUpUserDto.user_type
       };
   
       await this.usersRepository.save(createUser);
