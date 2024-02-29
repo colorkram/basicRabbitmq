@@ -89,6 +89,15 @@ async getTokens(user: User) {
   }
 }
 
+async findUser(id: number) {
+  try {
+      const user = await this.usersRepository.findOneBy({ id });
+      return user;
+  } catch (error) {
+      throw new NotFoundException(error);
+  }
+}
+
   findAll() {
     return `This action returns all auth`;
   }

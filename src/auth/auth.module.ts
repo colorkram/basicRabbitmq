@@ -7,6 +7,7 @@ import { UserModule } from 'src/user/user.module';
 import { jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { SessionSerializer } from './Serializer';
 
 @Module({
   imports: [
@@ -14,11 +15,14 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: jwtConstants.expire_secret },
+      signOptions: { expiresIn: '1h' },
   }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthService,JwtStrategy],
+  providers: [AuthService, AuthService,JwtStrategy,SessionSerializer,{
+    provide: 'AUTH_SERVICE',
+    useClass: AuthService,
+}],
   exports: [TypeOrmModule,JwtModule],
 })
 export class AuthModule {}

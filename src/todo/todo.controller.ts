@@ -13,9 +13,9 @@ export class TodoController {
   @Post()
   @UseGuards(JwtAuthGuard)
   create(@Body() createTodoDto: CreateTodoDto, @Req() req) {
-    console.log(req); // Access user information from the JWT token
-    // createTodoDto.user_id = req.user.sub;
-    // return this.todoService.createTodo(createTodoDto);
+    console.log(req.user.sub); // Access user information from the JWT token
+    createTodoDto.user_id = req.user.sub;
+    return this.todoService.createTodo(createTodoDto);
   }
   
 
