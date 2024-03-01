@@ -17,11 +17,24 @@ export class TodoController {
     createTodoDto.user_id = req.user.sub;
     return this.todoService.createTodo(createTodoDto);
   }
+
+  @Post('runTest')
+  @UseGuards(JwtAuthGuard)
+  createLoop(@Body() createTodoDto: CreateTodoDto, @Req() req) {
+     
+      this.todoService.runTest(createTodoDto,9000);
+      return 'Message sent and received successfully!';
+  }
   
+  @Get('send-receive-message')
+  async sendAndReceiveMessage(): Promise<string> {
+    await this.todoService.sendAndReceiveMessage();
+    return 'Message sent and received successfully!';
+  }
 
   @Get()
   findAll() {
-    return this.todoService.findAll();
+    // return this.todoService.findAll();
   }
 
   @Get(':id')
@@ -35,8 +48,8 @@ export class TodoController {
     return this.todoService.update(+id, updateTodoDto);
   }
 
-  @Delete(':id')
+  @Delete()
   remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+    return this.todoService.remove();
   }
 }

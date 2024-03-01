@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from 'db/data-source';
 import { AuthModule } from './auth/auth.module';
 import { TodoModule } from './todo/todo.module';
+import { RabbitmqModule } from './rabbitmq/rabbitmq.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { TodoModule } from './todo/todo.module';
     UserModule,
     AuthModule,
     TodoModule,
+    RabbitmqModule,
   ],
   controllers: [AppController],
   providers: [AppService],
