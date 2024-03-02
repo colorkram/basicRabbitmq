@@ -21,7 +21,7 @@ export class TodoService {
     // private todoService: TodoService,
     private readonly rabbitMQService: RabbitmqService,
   ) {}
-
+  private a = 1;
   async createTodo(createTodoDto: CreateTodoDto): Promise<Todo> {
     try {
       const { name, user_id } = createTodoDto;
@@ -48,7 +48,7 @@ export class TodoService {
     }
   }
 
-  async createTodoWithQueue(createTodoDto: CreateTodoDto): Promise<Todo> {
+  async createTodoWithQueue(createTodoDto: CreateTodoDto): Promise<any> {
     try {
       const { name, user_id } = createTodoDto;
 
@@ -61,20 +61,38 @@ export class TodoService {
         throw new BadRequestException(`User with id ${user_id} not found`);
       }
 
-      // Save the new todo
-      const todo = await this.todoRepository.save({
-        name: name,
-        user: user,
-      });
+      const todos: Todo[] = [];
 
-      // Send a message to the RabbitMQ queue
-      await this.rabbitMQService.sendMessage(
-        'todo_queue',
-        JSON.stringify(todo),
-      );
+      const data = {
+        name: `${name}_${this.a++}`, // Use a unique name for each todo
+        user_id: user_id,
+      };
+      // Create and save the new todos
+      // for (let i = 0; i < 5000; i++) {
+      //   const todo = await this.todoRepository.save({
+      //     name: `${name}_${i + 1}`, // Use a unique name for each todo
+      //     user: user,
+      //   });
+      //   todos.push(todo);
+      //   console.log(a++);
 
-      return todo;
+      // }
+console.log(data);
+
+      const test = await this.rabbitMQService.sendMessage('todo_queue', data);
+
+      // await this.rabbitMQService.receiveMessage('todo_queue', async (message) => {
+        // console.log('Received message:', message);
+        // console.log('Received message:', message);
+
+        // const todo = await this.todoRepository.save(JSON.parse(message))
+      // });
+      // console.log(test);
+
+      return test;
     } catch (error) {
+      console.log('error', error);
+      
       // Handle specific errors if needed, or rethrow the error
       throw new BadRequestException(error);
     }
@@ -87,9 +105,9 @@ export class TodoService {
     await this.rabbitMQService.sendMessage(queue, 'Hello RabbitMQ!');
 
     // Receive a message
-    await this.rabbitMQService.receiveMessage(queue, (message) => {
-      console.log('Received message:', message);
-    });
+    // await this.rabbitMQService.receiveMessage(queue, (message) => {
+    //   console.log('Received message:', message);
+    // });
   }
 
   async runTest(createTodoDto: CreateTodoDto, iterations) {
@@ -102,9 +120,11 @@ export class TodoService {
 
         console.log(`Running test ${i + 1} of ${iterations}`);
 
-      const todo = await this.createTodoWithQueue(createTodoDto);
+    const todo = await this.createTodoWithQueue(createTodoDto);
       todos = todo;
     }
+
+
 
     return todos;
   }

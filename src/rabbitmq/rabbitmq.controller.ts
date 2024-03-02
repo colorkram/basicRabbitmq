@@ -12,10 +12,11 @@ export class RabbitmqController {
   //   return this.rabbitmqService.create(createRabbitmqDto);
   // }
 
-  // @Get()
-  // findAll() {
-  //   return this.rabbitmqService.findAll();
-  // }
+  @Get()
+  async findAll() {
+     await this.rabbitmqService.receiveMessage('todo_queue');
+     return 'done'
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

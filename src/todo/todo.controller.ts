@@ -20,9 +20,11 @@ export class TodoController {
 
   @Post('runTest')
   @UseGuards(JwtAuthGuard)
-  createLoop(@Body() createTodoDto: CreateTodoDto, @Req() req) {
-     
-      this.todoService.runTest(createTodoDto,9000);
+   createLoop(@Body() createTodoDto: CreateTodoDto, @Req() req) {
+    //  console.log('createTodoDto',createTodoDto);
+     createTodoDto.user_id = req.user.sub;
+      this.todoService.runTest(createTodoDto,1000);
+      // this.todoService.createTodoWithQueue(createTodoDto);
       return 'Message sent and received successfully!';
   }
   
